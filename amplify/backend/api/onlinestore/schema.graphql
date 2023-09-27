@@ -1,0 +1,20 @@
+type OrderLine @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  orderID: ID! @index(name: "byOrder")
+  itemID: ID! @index(name: "byItem")
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  grandTotal: Float
+  orderDate: AWSDate
+  OrderLines: [OrderLine] @hasMany(indexName: "byOrder", fields: ["id"])
+}
+
+type Item @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  description: String
+  price: String
+  OrderLines: [OrderLine] @hasMany(indexName: "byItem", fields: ["id"])
+} 
